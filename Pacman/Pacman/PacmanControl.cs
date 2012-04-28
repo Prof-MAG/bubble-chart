@@ -18,6 +18,8 @@ namespace Pacman
             Loaded += (sender, args) => VisualStateManager.GoToState(this, "Normal", true);
             MouseEnter += (sender, args) => VisualStateManager.GoToState(this, "MouseOver", true);
             MouseLeave += (sender, args) => VisualStateManager.GoToState(this, "Normal", true);
+            MouseLeftButtonDown += (sender, args) => VisualStateManager.GoToState(this, "Pressed", true);
+            MouseLeftButtonUp += (sender, args) => VisualStateManager.GoToState(this, "Normal", true);
         }
 
         public double MouseAngle
