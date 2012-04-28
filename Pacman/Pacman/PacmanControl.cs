@@ -6,17 +6,22 @@ namespace Pacman
     public class PacmanControl : Control
     {
         public static readonly DependencyProperty MouseAngleProperty =
-            DependencyProperty.Register("MouseAngle", typeof(int), typeof(PacmanControl),
-                new PropertyMetadata(default(int)));
-
+            DependencyProperty.Register("MouseAngle", typeof(double), typeof(PacmanControl),
+                new PropertyMetadata(default(double)));
 
         public static readonly DependencyProperty SizeProperty =
             DependencyProperty.Register("Size", typeof(double), typeof(PacmanControl),
                 new PropertyMetadata(default(double)));
 
-        public int MouseAngle
+        public PacmanControl()
         {
-            get { return (int)GetValue(MouseAngleProperty); }
+            Loaded += (sender, args) =>
+                VisualStateManager.GoToState(this, "Normal", true);
+        }
+
+        public double MouseAngle
+        {
+            get { return (double)GetValue(MouseAngleProperty); }
             set { SetValue(MouseAngleProperty, value); }
         }
 

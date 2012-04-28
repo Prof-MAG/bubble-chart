@@ -12,12 +12,58 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Pacman:PacmanControl">
                         <Grid>
-                            <Ellipse
-                                Width="{TemplateBinding Size}"
-                                Height="{TemplateBinding Size}"
-                                Fill="Yellow"
-                                Stroke="Gray"
-                                StrokeThickness="1" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                AutoReverse="True"
+                                                Duration="0:0:1"
+                                                RepeatBehavior="Forever"
+                                                Storyboard.TargetName="DownChew"
+                                                Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                                To="0" />
+                                            <DoubleAnimation
+                                                AutoReverse="True"
+                                                Duration="0:0:1"
+                                                RepeatBehavior="Forever"
+                                                Storyboard.TargetName="UpChew"
+                                                Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                                To="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid Width="{TemplateBinding Size}" Height="{TemplateBinding Size}">
+                                <Path
+                                    x:Name="DownChew"
+                                    VerticalAlignment="Bottom"
+                                    Data="M0,0 A0.5,0.5,0,1,0,1,0 L0.5,0"
+                                    Fill="Yellow"
+                                    Stretch="Uniform"
+                                    Stroke="Gray"
+                                    StrokeEndLineCap="Round"
+                                    StrokeStartLineCap="Round"
+                                    StrokeThickness="1" />
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="40" CenterX="50" CenterY="50" />
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid Width="{TemplateBinding Size}" Height="{TemplateBinding Size}">
+                                <Path
+                                    x:Name="UpChew"
+                                    VerticalAlignment="Top"
+                                    Data="M0,0 A0.5,0.5,0,1,1,1,0 L0.5,0"
+                                    Fill="Yellow"
+                                    Stretch="Uniform"
+                                    Stroke="Gray"
+                                    StrokeEndLineCap="Round"
+                                    StrokeStartLineCap="Round"
+                                    StrokeThickness="1" />
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="-40" CenterX="50" CenterY="50" />
+                                </Grid.RenderTransform>
+                            </Grid>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -33,6 +79,7 @@
         <Pacman:PacmanControl
             x:Name="pacman"
             Margin="0,30,0,0"
+            MouseAngle="20"
             Size="100" />
     </Grid>
 </Window>
