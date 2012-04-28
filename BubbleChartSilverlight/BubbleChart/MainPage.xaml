@@ -26,6 +26,12 @@
             Minimum="2000"
             Value="{Binding ReportingYear,
                                 Mode=TwoWay}" />
-        <Controls:BubbleChartControl Grid.Row="1" ItemsSource="{Binding DataFiltered}" />
+        <Controls:BubbleChartControl
+            Grid.Row="1"
+            BubblesSource="{Binding DataFiltered}"
+            LegendMember="Region"
+            RadiusMember="Population"
+            XMember="MiddleAge"
+            YMember="Profit" />
     </Grid>
 </UserControl>

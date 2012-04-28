@@ -13,9 +13,17 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
-                            <Canvas>
-                                <ItemsPresenter />
-                            </Canvas>
+                            <Canvas x:Name="BubblesCanvas" />
+                            <Border
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Bottom"
+                                BorderBrush="Blue"
+                                BorderThickness="2" />
+                            <Border
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="Blue"
+                                BorderThickness="2" />
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -24,15 +32,11 @@
     </Style>
 
     <Style TargetType="local:BubbleControl">
+        <Setter Property="Background" Value="Red" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:BubbleControl">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter />
-                    </Border>
+                    <Ellipse Fill="{TemplateBinding Background}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

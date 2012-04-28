@@ -97,7 +97,6 @@
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BubbleChart.Controls\BubbleChart.Controls.csproj">
       <Project>{CABFC521-B900-4755-9419-AEFB9322B2DB}</Project>
