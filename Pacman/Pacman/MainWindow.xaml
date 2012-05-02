@@ -134,7 +134,7 @@
         <Pacman:PacmanControl
             x:Name="pacman"
             Margin="0,30,0,0"
-            MouseAngle="40"
+            MouthAngle="40"
             Size="100" />
     </Grid>
 </Window>
