@@ -12,9 +12,9 @@ namespace Pacman
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            pacman.Size = 20;
+            pacman.Size = 50;
         }
     }
 }

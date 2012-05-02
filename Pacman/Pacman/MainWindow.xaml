@@ -11,26 +11,28 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Pacman:PacmanControl">
-                        <Grid>
+                        <Grid                                
+                            Width="{TemplateBinding Size}"
+                            Height="{TemplateBinding Size}">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal">
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Duration="0:0:0.2"
-                                                Storyboard.TargetName="DownChew"
+                                                Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" />
                                             <DoubleAnimation
                                                 Duration="0:0:0.2"
-                                                Storyboard.TargetName="UpChew"
+                                                Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" />
                                             <ColorAnimation
                                                 Duration="0:0:0.2"
-                                                Storyboard.TargetName="DownChewColor"
+                                                Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)" />
                                             <ColorAnimation
                                                 Duration="0:0:0.2"
-                                                Storyboard.TargetName="UpChewColor"
+                                                Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)" />
                                         </Storyboard>
                                     </VisualState>
@@ -41,7 +43,7 @@
                                                 Duration="0:0:0.2"
                                                 From="40"
                                                 RepeatBehavior="Forever"
-                                                Storyboard.TargetName="DownChew"
+                                                Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                 To="0" />
                                             <DoubleAnimation
@@ -49,7 +51,7 @@
                                                 Duration="0:0:0.2"
                                                 From="-40"
                                                 RepeatBehavior="Forever"
-                                                Storyboard.TargetName="UpChew"
+                                                Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                 To="0" />
                                         </Storyboard>
@@ -58,22 +60,22 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Duration="0:0:0.5"
-                                                Storyboard.TargetName="DownChew"
+                                                Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                 To="0" />
                                             <DoubleAnimation
                                                 Duration="0:0:0.5"
-                                                Storyboard.TargetName="UpChew"
+                                                Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                 To="0" />
                                             <ColorAnimation
                                                 Duration="0:0:0.5"
-                                                Storyboard.TargetName="DownChewColor"
+                                                Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
                                                 To="Red" />
                                             <ColorAnimation
                                                 Duration="0:0:0.5"
-                                                Storyboard.TargetName="UpChewColor"
+                                                Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
                                                 To="Red" />
                                         </Storyboard>
@@ -81,12 +83,8 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <!--  down chew  -->
-                            <Grid
-                                x:Name="DownChew"
-                                Width="{TemplateBinding Size}"
-                                Height="{TemplateBinding Size}">
                                 <Path
-                                    x:Name="DownChewColor"
+                                    x:Name="BotChew"
                                     VerticalAlignment="Bottom"
                                     Data="M0,0 A0.5,0.5,0,1,0,1,0 L0.5,0"
                                     Fill="Yellow"
@@ -94,18 +92,14 @@
                                     Stroke="Gray"
                                     StrokeEndLineCap="Round"
                                     StrokeStartLineCap="Round"
-                                    StrokeThickness="1" />
-                                <Grid.RenderTransform>
-                                    <RotateTransform Angle="40" CenterX="50" CenterY="50" />
-                                </Grid.RenderTransform>
-                            </Grid>
+                                    StrokeThickness="1">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="BotRotator" Angle="40" />
+                                    </Path.RenderTransform>
+                                </Path>
                             <!--  upper chew  -->
-                            <Grid
-                                x:Name="UpChew"
-                                Width="{TemplateBinding Size}"
-                                Height="{TemplateBinding Size}">
                                 <Path
-                                    x:Name="UpChewColor"
+                                    x:Name="TopChew"
                                     VerticalAlignment="Top"
                                     Data="M0,0 A0.5,0.5,0,1,1,1,0 L0.5,0"
                                     Fill="Yellow"
@@ -113,15 +107,16 @@
                                     Stroke="Gray"
                                     StrokeEndLineCap="Round"
                                     StrokeStartLineCap="Round"
-                                    StrokeThickness="1" />
-                                <Grid.RenderTransform>
-                                    <RotateTransform Angle="-40" CenterX="50" CenterY="50" />
-                                </Grid.RenderTransform>
-                            </Grid>
+                                    StrokeThickness="1">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="TopRotator" Angle="-40" />
+                                    </Path.RenderTransform>
+                                </Path>
                             <!--  Eye  -->
                             <Ellipse
                                 Width="10"
                                 Height="10"
+                                VerticalAlignment="Center"
                                 Margin="0,0,0,40"
                                 Fill="Black" />
                         </Grid>
@@ -134,12 +129,11 @@
         <Button
             Height="20"
             VerticalAlignment="Top"
-            Click="Button_Click"
+            Click="ButtonClick"
             Content="Small Pacman" />
         <Pacman:PacmanControl
             x:Name="pacman"
             Margin="0,30,0,0"
-            MouseAngle="20"
             Size="100" />
     </Grid>
 </Window>
