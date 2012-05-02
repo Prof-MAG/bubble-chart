@@ -16,6 +16,17 @@ namespace Pacman
                                         new PropertyMetadata(default(double),
                                                              (o, args) => ((PacmanControl) o).PropertyChangedCallback()));
 
+        public static readonly DependencyProperty MouseAngleProperty =
+            DependencyProperty.Register("MouseAngle", typeof (double), typeof (PacmanControl),
+                                        new PropertyMetadata(default(double),
+                                                             (o, args) => ((PacmanControl) o).PropertyChangedCallback()));
+
+        public double MouseAngle
+        {
+            get { return (double) GetValue(MouseAngleProperty); }
+            set { SetValue(MouseAngleProperty, value); }
+        }
+
         private RotateTransform _topRotator;
         private RotateTransform _botRotator;
 
@@ -48,10 +59,12 @@ namespace Pacman
             {
                 _topRotator.CenterX = Size/2;
                 _topRotator.CenterY = Size/2;
+                _topRotator.Angle = -MouseAngle;
             }
             if (_botRotator != null)
             {
                 _botRotator.CenterX = Size/2;
+                _botRotator.Angle = MouseAngle;
             }
         }
     }
