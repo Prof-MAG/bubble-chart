@@ -11,9 +11,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Pacman:PacmanControl">
-                        <Grid                                
-                            Width="{TemplateBinding Size}"
-                            Height="{TemplateBinding Size}">
+                        <Grid Width="{TemplateBinding Size}" Height="{TemplateBinding Size}">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal">
@@ -84,30 +82,30 @@
                             </VisualStateManager.VisualStateGroups>
                             <!--  upper chew  -->
                             <Path
-                                    x:Name="TopChew"
-                                    VerticalAlignment="Top"
-                                    Data="M0,0 A0.5,0.5,0,1,1,1,0 L0.5,0"
-                                    Fill="Yellow"
-                                    Stretch="Uniform"
-                                    Stroke="Gray"
-                                    StrokeEndLineCap="Round"
-                                    StrokeStartLineCap="Round"
-                                    StrokeThickness="1">
+                                x:Name="TopChew"
+                                VerticalAlignment="Top"
+                                Data="M0,0 A0.5,0.5,0,1,1,1,0 L0.5,0"
+                                Fill="Yellow"
+                                Stretch="Uniform"
+                                Stroke="Gray"
+                                StrokeEndLineCap="Round"
+                                StrokeStartLineCap="Round"
+                                StrokeThickness="1">
                                 <Path.RenderTransform>
                                     <RotateTransform x:Name="TopRotator" Angle="-40" />
                                 </Path.RenderTransform>
                             </Path>
                             <!--  down chew  -->
                             <Path
-                                    x:Name="BotChew"
-                                    VerticalAlignment="Bottom"
-                                    Data="M0,0 A0.5,0.5,0,1,0,1,0 L0.5,0"
-                                    Fill="Yellow"
-                                    Stretch="Uniform"
-                                    Stroke="Gray"
-                                    StrokeEndLineCap="Round"
-                                    StrokeStartLineCap="Round"
-                                    StrokeThickness="1">
+                                x:Name="BotChew"
+                                VerticalAlignment="Bottom"
+                                Data="M0,0 A0.5,0.5,0,1,0,1,0 L0.5,0"
+                                Fill="Yellow"
+                                Stretch="Uniform"
+                                Stroke="Gray"
+                                StrokeEndLineCap="Round"
+                                StrokeStartLineCap="Round"
+                                StrokeThickness="1">
                                 <Path.RenderTransform>
                                     <RotateTransform x:Name="BotRotator" Angle="40" />
                                 </Path.RenderTransform>
@@ -116,8 +114,8 @@
                             <Ellipse
                                 Width="10"
                                 Height="10"
-                                VerticalAlignment="Center"
                                 Margin="0,0,0,40"
+                                VerticalAlignment="Center"
                                 Fill="Black" />
                         </Grid>
                     </ControlTemplate>
