@@ -9,7 +9,7 @@ namespace BubbleChart.ViewModels
 
         public MainPageModel()
         {
-            Data = new ObservableCollection<DataItemModel>()
+            Data = new ObservableCollection<DataItemModel>
             {
                 new DataItemModel(2000, "Donetsk", 12450, 22435, 123),
                 new DataItemModel(2000, "Kyiv", 12354, 22432, 124),
@@ -28,9 +28,23 @@ namespace BubbleChart.ViewModels
 
         private void RefreshDataFiltered()
         {
-            DataFiltered.Clear();
-            foreach (var dataItem in Data.Where(item => item.ReportingYear == ReportingYear))
-                DataFiltered.Add(dataItem);
+            var dataForPeriod = Data.Where(item => item.ReportingYear == ReportingYear).ToList();
+            // remove regions that are not present in the current period
+            DataFiltered.Where(item => dataForPeriod.All(periodItem => periodItem.Region != item.Region)).ToList()
+                .ForEach(item => DataFiltered.Remove(item));
+            // update or add new regions
+            foreach (var periodItem in Data.Where(item => item.ReportingYear == ReportingYear))
+            {
+                var filteredItem = DataFiltered.FirstOrDefault(item => item.Region == periodItem.Region);
+                if (filteredItem == null)
+                {
+                    filteredItem = new DataItemModel(ReportingYear, periodItem.Region);
+                    DataFiltered.Add(filteredItem);
+                }
+                filteredItem.MiddleAge = periodItem.MiddleAge;
+                filteredItem.Population = periodItem.Population;
+                filteredItem.Profit = periodItem.Profit;
+            }
         }
 
         public ObservableCollection<DataItemModel> Data { get; private set; }

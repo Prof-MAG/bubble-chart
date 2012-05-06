@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,8 +67,24 @@ namespace BubbleChart.Controls
                 : res;
         }
 
+        private void BubbleSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
+                RefreshBubblePositions();
+        }
+
         private void BubblesSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if(e.OldItems != null)
+            {
+                foreach(var oldItem in e.OldItems.OfType<INotifyPropertyChanged>())
+                    oldItem.PropertyChanged -= BubbleSourcePropertyChanged;
+            }
+            if(e.NewItems != null)
+            {
+                foreach(var oldItem in e.NewItems.OfType<INotifyPropertyChanged>())
+                    oldItem.PropertyChanged += BubbleSourcePropertyChanged;
+            }
             RefreshBubbles();
         }
 
@@ -102,12 +119,29 @@ namespace BubbleChart.Controls
         private void OnBubblesSourceChanged(DependencyPropertyChangedEventArgs args)
         {
             if(Equals(args.OldValue, args.NewValue)) return;
+
+            // subscribe to CollectionChanged event
             var oldNotifyCollection = args.OldValue as INotifyCollectionChanged;
             var newNotifyCollection = args.NewValue as INotifyCollectionChanged;
             if(oldNotifyCollection != null)
                 oldNotifyCollection.CollectionChanged -= BubblesSourceCollectionChanged;
             if(newNotifyCollection != null)
                 newNotifyCollection.CollectionChanged += BubblesSourceCollectionChanged;
+
+            // subscribe to PropertyChanged event
+            var oldEnumerable = (IEnumerable)args.OldValue;
+            var newEnumerable = (IEnumerable)args.NewValue;
+            if(oldEnumerable != null)
+            {
+                foreach(INotifyPropertyChanged notifyObject in oldEnumerable.OfType<INotifyPropertyChanged>())
+                    notifyObject.PropertyChanged -= BubbleSourcePropertyChanged;
+            }
+            if(newEnumerable != null)
+            {
+                foreach(INotifyPropertyChanged notifyObject in newEnumerable.OfType<INotifyPropertyChanged>())
+                    notifyObject.PropertyChanged += BubbleSourcePropertyChanged;
+            }
+
             RefreshBubbles();
         }
 
@@ -120,7 +154,7 @@ namespace BubbleChart.Controls
             _yMax = Bubbles.Max(bubble => bubble.YValue);
             _radiusMin = Bubbles.Min(bubble => bubble.Radius);
             _radiusMax = Bubbles.Max(bubble => bubble.Radius);
-            foreach(var bubble in Bubbles)
+            foreach(BubbleControl bubble in Bubbles)
             {
                 bubble.Width = GetBubbleWidth(bubble.Radius);
                 bubble.Height = bubble.Width;
@@ -132,11 +166,11 @@ namespace BubbleChart.Controls
         private void RefreshBubbles()
         {
             if(_bubblesCanvas == null) return;
-            var newBubbleControls = BubblesSource.Cast<object>().Select(GetBubble).ToList();
+            List<BubbleControl> newBubbleControls = BubblesSource.Cast<object>().Select(GetBubble).ToList();
             Bubbles.Clear();
             Bubbles.AddRange(newBubbleControls);
             _bubblesCanvas.Children.Clear();
-            foreach(var bubble in Bubbles)
+            foreach(BubbleControl bubble in Bubbles)
                 _bubblesCanvas.Children.Add(bubble);
             RefreshBubblePositions();
         }
