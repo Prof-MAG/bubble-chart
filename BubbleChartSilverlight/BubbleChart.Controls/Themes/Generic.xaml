@@ -36,7 +36,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:BubbleControl">
-                    <Ellipse Fill="{TemplateBinding Background}" />
+                    <Grid>
+                        <Ellipse Fill="{TemplateBinding Background}" Width="{TemplateBinding Size}" Height="{TemplateBinding Size}" Margin="{TemplateBinding BubbleMargin}" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -6,11 +6,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 
 namespace BubbleChart.Controls
 {
     public class BubbleChartControl : Control
     {
+        private const double MaxBubbleSize = 30;
+
         public static readonly DependencyProperty BubblesProperty =
             DependencyProperty.Register("Bubbles", typeof(List<BubbleControl>), typeof(BubbleChartControl),
                 new PropertyMetadata(default(List<BubbleControl>)));
@@ -61,7 +64,7 @@ namespace BubbleChart.Controls
 
         private static double GetPixels(double min, double max, double value, double pixelRange)
         {
-            var res = (value - min) / (max - min) * pixelRange;
+            double res = (value - min) / (max - min) * pixelRange;
             return double.IsNaN(res)
                 ? pixelRange
                 : res;
@@ -77,12 +80,12 @@ namespace BubbleChart.Controls
         {
             if(e.OldItems != null)
             {
-                foreach(var oldItem in e.OldItems.OfType<INotifyPropertyChanged>())
+                foreach(INotifyPropertyChanged oldItem in e.OldItems.OfType<INotifyPropertyChanged>())
                     oldItem.PropertyChanged -= BubbleSourcePropertyChanged;
             }
             if(e.NewItems != null)
             {
-                foreach(var oldItem in e.NewItems.OfType<INotifyPropertyChanged>())
+                foreach(INotifyPropertyChanged oldItem in e.NewItems.OfType<INotifyPropertyChanged>())
                     oldItem.PropertyChanged += BubbleSourcePropertyChanged;
             }
             RefreshBubbles();
@@ -90,10 +93,11 @@ namespace BubbleChart.Controls
 
         private BubbleControl GetBubble(object bubbleSource)
         {
-            var bubble = Bubbles.FirstOrDefault(b => b.DataContext == bubbleSource);
+            BubbleControl bubble = Bubbles.FirstOrDefault(b => b.DataContext == bubbleSource);
             if(bubble == null)
             {
                 bubble = new BubbleControl { DataContext = bubbleSource };
+                bubble.SetBinding(BubbleControl.LegendValueProperty, new Binding(LegendMember));
                 bubble.SetBinding(BubbleControl.XValueProperty, new Binding(XMember));
                 bubble.SetBinding(BubbleControl.YValueProperty, new Binding(YMember));
                 bubble.SetBinding(BubbleControl.RadiusProperty, new Binding(RadiusMember));
@@ -101,12 +105,12 @@ namespace BubbleChart.Controls
             return bubble;
         }
 
-        private double GetBubbleWidth(double radius)
+        private double GetBubbleSize(double radius)
         {
-            return GetPixels(_radiusMin, _radiusMax, radius, 30);
+            return GetPixels(_radiusMin, _radiusMax, radius, MaxBubbleSize);
         }
 
-        private object GetCanvasLeft(double xValue)
+        private double GetCanvasLeft(double xValue)
         {
             return GetPixels(_xMin, _xMax, xValue, _bubblesCanvas.ActualWidth);
         }
@@ -154,13 +158,23 @@ namespace BubbleChart.Controls
             _yMax = Bubbles.Max(bubble => bubble.YValue);
             _radiusMin = Bubbles.Min(bubble => bubble.Radius);
             _radiusMax = Bubbles.Max(bubble => bubble.Radius);
-            foreach(BubbleControl bubble in Bubbles)
+            var storyboard = new Storyboard();
+            foreach (BubbleControl bubble in Bubbles)
             {
-                bubble.Width = GetBubbleWidth(bubble.Radius);
-                bubble.Height = bubble.Width;
-                bubble.SetValue(Canvas.LeftProperty, GetCanvasLeft(bubble.XValue));
-                bubble.SetValue(Canvas.TopProperty, GetCanvasTop(bubble.YValue));
+                var sizeAnimation = new DoubleAnimation { To = GetBubbleSize(bubble.Radius) };
+                var leftAnimation = new DoubleAnimation { To = GetCanvasLeft(bubble.XValue) };
+                var topAnimation = new DoubleAnimation { To = GetCanvasTop(bubble.YValue) };
+                storyboard.Children.Add(sizeAnimation);
+                storyboard.Children.Add(leftAnimation);
+                storyboard.Children.Add(topAnimation);
+                Storyboard.SetTarget(sizeAnimation, bubble);
+                Storyboard.SetTarget(leftAnimation, bubble);
+                Storyboard.SetTarget(topAnimation, bubble);
+                Storyboard.SetTargetProperty(sizeAnimation, new PropertyPath(BubbleControl.SizeProperty));
+                Storyboard.SetTargetProperty(leftAnimation, new PropertyPath(Canvas.LeftProperty));
+                Storyboard.SetTargetProperty(topAnimation, new PropertyPath(Canvas.TopProperty));
             }
+            storyboard.Begin();
         }
 
         private void RefreshBubbles()

@@ -5,6 +5,10 @@ namespace BubbleChart.Controls
 {
     public class BubbleControl : Control
     {
+        public static readonly DependencyProperty BubbleMarginProperty =
+            DependencyProperty.Register("BubbleMargin", typeof(Thickness), typeof(BubbleControl),
+                new PropertyMetadata(default(Thickness)));
+
         public static readonly DependencyProperty LegendValueProperty =
             DependencyProperty.Register("LegendValue", typeof(object), typeof(BubbleControl),
                 new PropertyMetadata(default(object)));
@@ -12,6 +16,10 @@ namespace BubbleChart.Controls
         public static readonly DependencyProperty RadiusProperty =
             DependencyProperty.Register("Radius", typeof(double), typeof(BubbleControl),
                 new PropertyMetadata(default(double)));
+
+        public static readonly DependencyProperty SizeProperty =
+            DependencyProperty.Register("Size", typeof(double), typeof(BubbleControl),
+                new PropertyMetadata(default(double), (o, args) => ((BubbleControl)o).OnSizeChanged()));
 
         public static readonly DependencyProperty XValueProperty =
             DependencyProperty.Register("XValue", typeof(double), typeof(BubbleControl),
@@ -26,9 +34,15 @@ namespace BubbleChart.Controls
             DefaultStyleKey = typeof(BubbleControl);
         }
 
+        public Thickness BubbleMargin
+        {
+            get { return (Thickness)GetValue(BubbleMarginProperty); }
+            set { SetValue(BubbleMarginProperty, value); }
+        }
+
         public object LegendValue
         {
-            get { return (object)GetValue(LegendValueProperty); }
+            get { return GetValue(LegendValueProperty); }
             set { SetValue(LegendValueProperty, value); }
         }
 
@@ -36,6 +50,12 @@ namespace BubbleChart.Controls
         {
             get { return (double)GetValue(RadiusProperty); }
             set { SetValue(RadiusProperty, value); }
+        }
+
+        public double Size
+        {
+            get { return (double)GetValue(SizeProperty); }
+            set { SetValue(SizeProperty, value); }
         }
 
         public double XValue
@@ -48,6 +68,11 @@ namespace BubbleChart.Controls
         {
             get { return (double)GetValue(YValueProperty); }
             set { SetValue(YValueProperty, value); }
+        }
+
+        private void OnSizeChanged()
+        {
+            BubbleMargin = new Thickness(-Size / 2, -Size / 2, 0, 0);
         }
     }
 }
