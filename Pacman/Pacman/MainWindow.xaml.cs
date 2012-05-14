@@ -11,10 +11,5 @@ namespace Pacman
         {
             InitializeComponent();
         }
-
-        private void ButtonClick(object sender, RoutedEventArgs e)
-        {
-            pacman.Size = 50;
-        }
     }
 }
