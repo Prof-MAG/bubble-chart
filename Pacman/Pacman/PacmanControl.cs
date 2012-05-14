@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace Pacman
 {
+    [TemplateVisualState(Name = "Normal")]
+    [TemplateVisualState(Name = "MouseOver")]
+    [TemplateVisualState(Name = "Pressed")]
     [TemplatePart(Name = TopRotator, Type = typeof(RotateTransform))]
     [TemplatePart(Name = BotRotator, Type = typeof(RotateTransform))]
     public class PacmanControl : Control
