@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="BubbleChartWin8.BlankPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Controls="using:BubbleChartWin8.Controls" xmlns:ViewModels="using:BubbleChartWin8.ViewModels"
+    mc:Ignorable="d">
+
+  <Page.Resources>
+    <DataTemplate x:Key="LabelTemplate">
+            <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold" FontSize="16" />
+        </DataTemplate>
+  </Page.Resources>
+  <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
+        <Grid.DataContext>
+            <ViewModels:MainPageModel />
+        </Grid.DataContext>
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Slider
+                Maximum="2011"
+                Minimum="2000"
+                Value="{Binding ReportingYear,
+                                    Mode=TwoWay}" />
+            <Controls:BubbleChartControl
+                Grid.Row="1"
+                BubblesSource="{Binding Path=DataFiltered, Mode=OneWay}"
+                LegendMember="Region"
+                RadiusMember="Population"
+                XLabelContent="Middle Age" YLabelContent="Profit"
+                XMember="MiddleAge"
+                XLabelContentTemplate="{StaticResource LabelTemplate}"
+                YLabelContentTemplate="{StaticResource LabelTemplate}"
+                YMember="Profit">
+            </Controls:BubbleChartControl>
+        </Grid>
+    </Grid>
+</Page>
