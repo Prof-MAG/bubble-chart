@@ -61,24 +61,23 @@ namespace Pacman
 
         private void PropertyChangedCallback()
         {
+            RotateTransform topRotator = null;
+            RotateTransform botRotator = null;
             if (_topChew != null)
+                topRotator = _topChew.RenderTransform as RotateTransform;
+            if (_botChew != null)
+                botRotator = _botChew.RenderTransform as RotateTransform;
+
+            if (topRotator != null)
             {
-                var topRotator = _topChew.RenderTransform as RotateTransform;
-                if (topRotator != null)
-                {
-                    topRotator.CenterX = Size / 2;
-                    topRotator.CenterY = Size / 2;
-                    topRotator.Angle = -MouthAngle;
-                }
+                topRotator.CenterX = Size / 2;
+                topRotator.CenterY = Size / 2;
+                topRotator.Angle = -MouthAngle;
             }
-            if(_botChew != null)
+            if (botRotator != null)
             {
-                var botRotator = _botChew.RenderTransform as RotateTransform;
-                if (botRotator != null)
-                {
-                    botRotator.CenterX = Size / 2;
-                    botRotator.Angle = MouthAngle;
-                }
+                botRotator.CenterX = Size / 2;
+                botRotator.Angle = MouthAngle;
             }
         }
     }
