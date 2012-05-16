@@ -92,7 +92,7 @@
                                 StrokeStartLineCap="Round"
                                 StrokeThickness="1">
                                 <Path.RenderTransform>
-                                    <RotateTransform x:Name="TopRotator" />
+                                    <RotateTransform />
                                 </Path.RenderTransform>
                             </Path>
                             <!--  down chew  -->
@@ -107,7 +107,7 @@
                                 StrokeStartLineCap="Round"
                                 StrokeThickness="1">
                                 <Path.RenderTransform>
-                                    <RotateTransform x:Name="BotRotator" />
+                                    <RotateTransform />
                                 </Path.RenderTransform>
                             </Path>
                             <!--  Eye  -->
