@@ -6,7 +6,7 @@
     xmlns:Controls="using:BubbleChartWin8.Controls" xmlns:ViewModels="using:BubbleChartWin8.ViewModels" mc:Ignorable="d">
 
   <Page.Resources>
-    <DataTemplate x:Key="LabelTemplate">
+        <DataTemplate x:Key="LabelTemplate">
             <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold" FontSize="16" />
         </DataTemplate>
         <!--<Style TargetType="Controls:BubbleControl">
@@ -18,7 +18,7 @@
                 </Setter.Value>
             </Setter>
         </Style>-->
-    </Page.Resources>
+  </Page.Resources>
   <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
         <Grid.DataContext>
             <ViewModels:MainPageModel />
@@ -38,7 +38,8 @@
                 BubblesSource="{Binding Path=DataFiltered, Mode=OneWay}"
                 LegendMember="Region"
                 RadiusMember="Profit"
-                XLabelContent="Рабочее население" YLabelContent="Население"
+                XLabelContent="Рабочее население" 
+                YLabelContent="Население"
                 XMember="WorkingPopulation"
                 XLabelContentTemplate="{StaticResource LabelTemplate}"
                 YLabelContentTemplate="{StaticResource LabelTemplate}"
