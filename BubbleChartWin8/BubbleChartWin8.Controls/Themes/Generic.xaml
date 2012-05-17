@@ -19,9 +19,9 @@
                       BorderThickness="2" Margin="20,0,0,0" />
                             <Canvas VerticalAlignment="Stretch">
                                 <Canvas.RenderTransform>
-                                    <RotateTransform Angle="-90" CenterY="500" />
+                                    <RotateTransform Angle="-90" CenterY="400" />
                                 </Canvas.RenderTransform>
-                                <ContentControl Content="{TemplateBinding YLabelContent}" ContentTemplate="{TemplateBinding YLabelContentTemplate}" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,500,0,0">
+                                <ContentControl Content="{TemplateBinding YLabelContent}" ContentTemplate="{TemplateBinding YLabelContentTemplate}" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,400,0,0">
                             </ContentControl>
                             </Canvas>
                             <ContentControl Content="{TemplateBinding XLabelContent}" ContentTemplate="{TemplateBinding XLabelContentTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" />
