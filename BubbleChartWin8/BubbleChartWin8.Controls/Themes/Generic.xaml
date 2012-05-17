@@ -41,7 +41,7 @@
                     <Grid>
                         <Ellipse Fill="{TemplateBinding Background}" Width="{TemplateBinding Size}"
                      Height="{TemplateBinding Size}" Margin="{TemplateBinding BubbleMargin}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" />
-                        <TextBlock Text="{TemplateBinding LegendValue}" Foreground="Black" />
+                        <TextBlock Text="{TemplateBinding LegendValue}" Foreground="Black" Margin="{TemplateBinding BubbleMargin}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
