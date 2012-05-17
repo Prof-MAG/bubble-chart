@@ -16,10 +16,6 @@ namespace BubbleChartWin8.Controls
     {
         private const double MaxBubbleSize = 100;
 
-        public static readonly DependencyProperty BubblesProperty =
-            DependencyProperty.Register("Bubbles", typeof (List<BubbleControl>), typeof (BubbleChartControl),
-                                        new PropertyMetadata(default(List<BubbleControl>)));
-
         public static readonly DependencyProperty BubblesSourceProperty =
             DependencyProperty.Register("BubblesSource", typeof (object), typeof (BubbleChartControl),
                                         new PropertyMetadata(default(object),
@@ -65,21 +61,14 @@ namespace BubbleChartWin8.Controls
         public static readonly DependencyProperty YMinProperty =
             DependencyProperty.Register("YMin", typeof (double), typeof (BubbleChartControl),
                                         new PropertyMetadata(default(double)));
-
-        private Canvas _bubblesCanvas;
-        private bool _isQueuedRefreshPositions = false;
-
+        
         public BubbleChartControl()
         {
             DefaultStyleKey = typeof (BubbleChartControl);
-            Bubbles = new List<BubbleControl>();
+            _bubbles = new List<BubbleControl>();
         }
 
-        public List<BubbleControl> Bubbles
-        {
-            get { return (List<BubbleControl>) GetValue(BubblesProperty); }
-            set { SetValue(BubblesProperty, value); }
-        }
+        private List<BubbleControl> _bubbles;
 
         public IEnumerable BubblesSource
         {
@@ -155,26 +144,14 @@ namespace BubbleChartWin8.Controls
             set { SetValue(YMinProperty, value); }
         }
 
+        private Canvas _bubblesCanvas;
+
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             _bubblesCanvas = (Canvas) GetTemplateChild("BubblesCanvas");
             _bubblesCanvas.SizeChanged += (sender, args) => RefreshBubblePositions();
             RefreshBubbles();
-        }
-
-        private static double GetPixels(double min, double max, double value, double pixelRange)
-        {
-            double res = (value - min)/(max - min)*pixelRange;
-            return double.IsNaN(res)
-                       ? pixelRange
-                       : res;
-        }
-
-        private void BubbleSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
-                QueueRefreshBubblePositions();
         }
 
         private void BubblesSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -192,9 +169,15 @@ namespace BubbleChartWin8.Controls
             RefreshBubbles();
         }
 
+        private void BubbleSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
+                QueueRefreshBubblePositions();
+        }
+
         private BubbleControl GetBubble(object bubbleSource)
         {
-            BubbleControl bubble = Bubbles.FirstOrDefault(b => b.DataContext == bubbleSource);
+            BubbleControl bubble = _bubbles.FirstOrDefault(b => b.DataContext == bubbleSource);
             if (bubble == null)
             {
                 bubble = new BubbleControl {DataContext = bubbleSource};
@@ -204,6 +187,14 @@ namespace BubbleChartWin8.Controls
                 bubble.SetBinding(BubbleControl.RadiusProperty, new Binding {Path = new PropertyPath(RadiusMember)});
             }
             return bubble;
+        }
+
+        private static double GetPixels(double min, double max, double value, double pixelRange)
+        {
+            double res = (value - min) / (max - min) * pixelRange;
+            return double.IsNaN(res)
+                       ? pixelRange
+                       : res;
         }
 
         private double GetBubbleSize(double radius)
@@ -249,6 +240,8 @@ namespace BubbleChartWin8.Controls
 
             RefreshBubbles();
         }
+        
+        private bool _isQueuedRefreshPositions = false;
 
         private void QueueRefreshBubblePositions()
         {
@@ -265,9 +258,9 @@ namespace BubbleChartWin8.Controls
 
         private void RefreshBubblePositions()
         {
-            if (Bubbles.Count == 0) return;
+            if (_bubbles.Count == 0) return;
             var storyboard = new Storyboard();
-            foreach (BubbleControl bubble in Bubbles)
+            foreach (BubbleControl bubble in _bubbles)
             {
                 var sizeAnimation = new DoubleAnimation
                                         {To = GetBubbleSize(bubble.Radius), EnableDependentAnimation = true};
@@ -292,10 +285,10 @@ namespace BubbleChartWin8.Controls
         {
             if (_bubblesCanvas == null) return;
             List<BubbleControl> newBubbleControls = BubblesSource.Cast<object>().Select(GetBubble).ToList();
-            Bubbles.Clear();
-            Bubbles.AddRange(newBubbleControls);
+            _bubbles.Clear();
+            _bubbles.AddRange(newBubbleControls);
             _bubblesCanvas.Children.Clear();
-            foreach (BubbleControl bubble in Bubbles)
+            foreach (BubbleControl bubble in _bubbles)
                 _bubblesCanvas.Children.Add(bubble);
             QueueRefreshBubblePositions();
         }
