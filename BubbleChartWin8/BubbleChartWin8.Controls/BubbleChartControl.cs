@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -66,6 +67,7 @@ namespace BubbleChartWin8.Controls
                                         new PropertyMetadata(default(double)));
 
         private Canvas _bubblesCanvas;
+        private bool _isQueuedRefreshPositions = false;
 
         public BubbleChartControl()
         {
@@ -172,7 +174,7 @@ namespace BubbleChartWin8.Controls
         private void BubbleSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
-                RefreshBubblePositions();
+                QueueRefreshBubblePositions();
         }
 
         private void BubblesSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -248,6 +250,19 @@ namespace BubbleChartWin8.Controls
             RefreshBubbles();
         }
 
+        private void QueueRefreshBubblePositions()
+        {
+            if (!_isQueuedRefreshPositions)
+            {
+                _isQueuedRefreshPositions = true;
+                Dispatcher.InvokeAsync(CoreDispatcherPriority.High, (sender, args) =>
+                                                                        {
+                                                                            RefreshBubblePositions();
+                                                                            _isQueuedRefreshPositions = false;
+                                                                        }, this, null);
+            }
+        }
+
         private void RefreshBubblePositions()
         {
             if (Bubbles.Count == 0) return;
@@ -282,7 +297,7 @@ namespace BubbleChartWin8.Controls
             _bubblesCanvas.Children.Clear();
             foreach (BubbleControl bubble in Bubbles)
                 _bubblesCanvas.Children.Add(bubble);
-            RefreshBubblePositions();
+            QueueRefreshBubblePositions();
         }
     }
 }
