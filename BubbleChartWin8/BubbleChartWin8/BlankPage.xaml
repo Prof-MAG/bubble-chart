@@ -43,7 +43,7 @@
                 XLabelContentTemplate="{StaticResource LabelTemplate}"
                 YLabelContentTemplate="{StaticResource LabelTemplate}"
                 YMember="Population"
-                XMin="14" YMin="60" RadiusMin="600"
+                XMin="0" YMin="0" RadiusMin="0"
                 XMax="360" YMax="1100" RadiusMax="3800">
             </Controls:BubbleChartControl>
         </Grid>
