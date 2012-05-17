@@ -10,8 +10,8 @@ namespace Pacman
     [TemplateVisualState(Name = "Normal")]
     [TemplateVisualState(Name = "MouseOver")]
     [TemplateVisualState(Name = "Pressed")]
-    [TemplatePart(Name = TopChew, Type = typeof(RotateTransform))]
-    [TemplatePart(Name = BotChew, Type = typeof(RotateTransform))]
+    [TemplatePart(Name = TopChew, Type = typeof(Path))]
+    [TemplatePart(Name = BotChew, Type = typeof(Path))]
     public class PacmanControl : Control
     {
         private const string BotChew = "BotChew";
@@ -64,9 +64,9 @@ namespace Pacman
             RotateTransform topRotator = null;
             RotateTransform botRotator = null;
             if (_topChew != null)
-                topRotator = _topChew.RenderTransform as RotateTransform;
+                topRotator = _topChew.RenderTransform as Path;
             if (_botChew != null)
-                botRotator = _botChew.RenderTransform as RotateTransform;
+                botRotator = _botChew.RenderTransform as Path;
 
             if (topRotator != null)
             {
