@@ -18,6 +18,7 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Duration="0:0:0.2"
+                                                EnableDependentAnimation="True"
                                                 Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" />
                                             <DoubleAnimation
@@ -39,7 +40,6 @@
                                             <DoubleAnimation
                                                 AutoReverse="True"
                                                 Duration="0:0:0.2"
-                                                From="40"
                                                 RepeatBehavior="Forever"
                                                 Storyboard.TargetName="BotChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
@@ -47,7 +47,6 @@
                                             <DoubleAnimation
                                                 AutoReverse="True"
                                                 Duration="0:0:0.2"
-                                                From="-40"
                                                 RepeatBehavior="Forever"
                                                 Storyboard.TargetName="TopChew"
                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"

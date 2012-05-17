@@ -32,6 +32,8 @@ namespace Pacman
 
         public PacmanControl()
         {
+            DefaultStyleKey = typeof (PacmanControl);
+
             Loaded += (sender, args) => VisualStateManager.GoToState(this, "Normal", true);
             PointerEntered += (sender, args) => VisualStateManager.GoToState(this, "MouseOver", true);
             PointerExited += (sender, args) => VisualStateManager.GoToState(this, "Normal", true);
@@ -64,9 +66,9 @@ namespace Pacman
             RotateTransform topRotator = null;
             RotateTransform botRotator = null;
             if (_topChew != null)
-                topRotator = _topChew.RenderTransform as Path;
+                topRotator = _topChew.RenderTransform as RotateTransform;
             if (_botChew != null)
-                botRotator = _botChew.RenderTransform as Path;
+                botRotator = _botChew.RenderTransform as RotateTransform;
 
             if (topRotator != null)
             {
