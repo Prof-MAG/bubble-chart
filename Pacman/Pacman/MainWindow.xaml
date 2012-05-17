@@ -112,12 +112,22 @@
                                 </Path.RenderTransform>
                             </Path>
                             <!--  Eye  -->
-                            <Ellipse
-                                Width="10"
-                                Height="10"
-                                Margin="0,0,0,40"
-                                VerticalAlignment="Center"
-                                Fill="Black" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.45*" />
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition Width="0.45*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.25*" />
+                                    <RowDefinition Height="0.1*" />
+                                    <RowDefinition Height="0.65*" />
+                                </Grid.RowDefinitions>
+                                <Ellipse
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Fill="Black" />
+                            </Grid>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
