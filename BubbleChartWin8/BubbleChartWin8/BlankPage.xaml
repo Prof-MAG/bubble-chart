@@ -3,14 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Controls="using:BubbleChartWin8.Controls" xmlns:ViewModels="using:BubbleChartWin8.ViewModels"
-    mc:Ignorable="d">
+    xmlns:Controls="using:BubbleChartWin8.Controls" xmlns:ViewModels="using:BubbleChartWin8.ViewModels" mc:Ignorable="d">
 
   <Page.Resources>
     <DataTemplate x:Key="LabelTemplate">
             <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold" FontSize="16" />
         </DataTemplate>
-  </Page.Resources>
+        <!--<Style TargetType="Controls:BubbleControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Controls:BubbleControl">
+                        <Controls:PacmanControl Size="{TemplateBinding Size}" Margin="{TemplateBinding BubbleMargin}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    </Page.Resources>
   <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
         <Grid.DataContext>
             <ViewModels:MainPageModel />
@@ -21,20 +29,22 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Slider
-                Maximum="2011"
-                Minimum="2000"
+                Maximum="2010"
+                Minimum="2005"
                 Value="{Binding ReportingYear,
                                     Mode=TwoWay}" />
             <Controls:BubbleChartControl
                 Grid.Row="1"
                 BubblesSource="{Binding Path=DataFiltered, Mode=OneWay}"
                 LegendMember="Region"
-                RadiusMember="Population"
-                XLabelContent="Middle Age" YLabelContent="Profit"
-                XMember="MiddleAge"
+                RadiusMember="Profit"
+                XLabelContent="Рабочее население" YLabelContent="Население"
+                XMember="WorkingPopulation"
                 XLabelContentTemplate="{StaticResource LabelTemplate}"
                 YLabelContentTemplate="{StaticResource LabelTemplate}"
-                YMember="Profit">
+                YMember="Population"
+                XMin="14" YMin="60" RadiusMin="600"
+                XMax="360" YMax="1100" RadiusMax="3800">
             </Controls:BubbleChartControl>
         </Grid>
     </Grid>

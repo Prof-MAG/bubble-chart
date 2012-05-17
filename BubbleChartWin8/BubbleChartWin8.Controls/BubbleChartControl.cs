@@ -13,61 +13,93 @@ namespace BubbleChartWin8.Controls
 {
     public class BubbleChartControl : Control
     {
-        private const double MaxBubbleSize = 30;
+        private const double MaxBubbleSize = 100;
 
         public static readonly DependencyProperty BubblesProperty =
-            DependencyProperty.Register("Bubbles", typeof(List<BubbleControl>), typeof(BubbleChartControl),
-                new PropertyMetadata(default(List<BubbleControl>)));
+            DependencyProperty.Register("Bubbles", typeof (List<BubbleControl>), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(List<BubbleControl>)));
 
         public static readonly DependencyProperty BubblesSourceProperty =
-            DependencyProperty.Register("BubblesSource", typeof(object), typeof(BubbleChartControl),
-                new PropertyMetadata(default(object),
-                    (o, args) => ((BubbleChartControl)o).OnBubblesSourceChanged(args)));
+            DependencyProperty.Register("BubblesSource", typeof (object), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(object),
+                                                             (o, args) =>
+                                                             ((BubbleChartControl) o).OnBubblesSourceChanged(args)));
+
+        public static readonly DependencyProperty RadiusMaxProperty =
+            DependencyProperty.Register("RadiusMax", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
+
+        public static readonly DependencyProperty RadiusMinProperty =
+            DependencyProperty.Register("RadiusMin", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
 
         public static readonly DependencyProperty XLabelContentProperty =
-            DependencyProperty.Register("XLabelContent", typeof(object), typeof(BubbleChartControl),
-                new PropertyMetadata(default(object)));
+            DependencyProperty.Register("XLabelContent", typeof (object), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(object)));
 
         public static readonly DependencyProperty XLabelContentTemplateProperty =
-            DependencyProperty.Register("XLabelContentTemplate", typeof(DataTemplate), typeof(BubbleChartControl),
-                new PropertyMetadata(default(DataTemplate)));
+            DependencyProperty.Register("XLabelContentTemplate", typeof (DataTemplate), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(DataTemplate)));
+
+        public static readonly DependencyProperty XMaxProperty =
+            DependencyProperty.Register("XMax", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
+
+        public static readonly DependencyProperty XMinProperty =
+            DependencyProperty.Register("XMin", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
 
         public static readonly DependencyProperty YLabelContentProperty =
-            DependencyProperty.Register("YLabelContent", typeof(object), typeof(BubbleChartControl),
-                new PropertyMetadata(default(object)));
+            DependencyProperty.Register("YLabelContent", typeof (object), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(object)));
 
         public static readonly DependencyProperty YLabelContentTemplateProperty =
-            DependencyProperty.Register("YLabelContentTemplate", typeof(DataTemplate), typeof(BubbleChartControl),
-                new PropertyMetadata(default(DataTemplate)));
+            DependencyProperty.Register("YLabelContentTemplate", typeof (DataTemplate), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(DataTemplate)));
+
+        public static readonly DependencyProperty YMaxProperty =
+            DependencyProperty.Register("YMax", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
+
+        public static readonly DependencyProperty YMinProperty =
+            DependencyProperty.Register("YMin", typeof (double), typeof (BubbleChartControl),
+                                        new PropertyMetadata(default(double)));
 
         private Canvas _bubblesCanvas;
-        private double _radiusMax;
-        private double _radiusMin;
-        private double _xMax;
-        private double _xMin;
-        private double _yMax;
-        private double _yMin;
 
         public BubbleChartControl()
         {
-            DefaultStyleKey = typeof(BubbleChartControl);
+            DefaultStyleKey = typeof (BubbleChartControl);
             Bubbles = new List<BubbleControl>();
         }
 
         public List<BubbleControl> Bubbles
         {
-            get { return (List<BubbleControl>)GetValue(BubblesProperty); }
+            get { return (List<BubbleControl>) GetValue(BubblesProperty); }
             set { SetValue(BubblesProperty, value); }
         }
 
         public IEnumerable BubblesSource
         {
-            get { return (IEnumerable)GetValue(BubblesSourceProperty); }
+            get { return (IEnumerable) GetValue(BubblesSourceProperty); }
             set { SetValue(BubblesSourceProperty, value); }
         }
 
         public string LegendMember { get; set; }
+
+        public double RadiusMax
+        {
+            get { return (double) GetValue(RadiusMaxProperty); }
+            set { SetValue(RadiusMaxProperty, value); }
+        }
+
         public string RadiusMember { get; set; }
+
+        public double RadiusMin
+        {
+            get { return (double) GetValue(RadiusMinProperty); }
+            set { SetValue(RadiusMinProperty, value); }
+        }
 
         public object XLabelContent
         {
@@ -77,11 +109,23 @@ namespace BubbleChartWin8.Controls
 
         public DataTemplate XLabelContentTemplate
         {
-            get { return (DataTemplate)GetValue(XLabelContentTemplateProperty); }
+            get { return (DataTemplate) GetValue(XLabelContentTemplateProperty); }
             set { SetValue(XLabelContentTemplateProperty, value); }
         }
 
+        public double XMax
+        {
+            get { return (double) GetValue(XMaxProperty); }
+            set { SetValue(XMaxProperty, value); }
+        }
+
         public string XMember { get; set; }
+
+        public double XMin
+        {
+            get { return (double) GetValue(XMinProperty); }
+            set { SetValue(XMinProperty, value); }
+        }
 
         public object YLabelContent
         {
@@ -91,44 +135,56 @@ namespace BubbleChartWin8.Controls
 
         public DataTemplate YLabelContentTemplate
         {
-            get { return (DataTemplate)GetValue(YLabelContentTemplateProperty); }
+            get { return (DataTemplate) GetValue(YLabelContentTemplateProperty); }
             set { SetValue(YLabelContentTemplateProperty, value); }
+        }
+
+        public double YMax
+        {
+            get { return (double) GetValue(YMaxProperty); }
+            set { SetValue(YMaxProperty, value); }
         }
 
         public string YMember { get; set; }
 
+        public double YMin
+        {
+            get { return (double) GetValue(YMinProperty); }
+            set { SetValue(YMinProperty, value); }
+        }
+
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _bubblesCanvas = (Canvas)GetTemplateChild("BubblesCanvas");
+            _bubblesCanvas = (Canvas) GetTemplateChild("BubblesCanvas");
             _bubblesCanvas.SizeChanged += (sender, args) => RefreshBubblePositions();
             RefreshBubbles();
         }
 
         private static double GetPixels(double min, double max, double value, double pixelRange)
         {
-            double res = (value - min) / (max - min) * pixelRange;
+            double res = (value - min)/(max - min)*pixelRange;
             return double.IsNaN(res)
-                ? pixelRange
-                : res;
+                       ? pixelRange
+                       : res;
         }
 
         private void BubbleSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
+            if (e.PropertyName == XMember || e.PropertyName == YMember || e.PropertyName == RadiusMember)
                 RefreshBubblePositions();
         }
 
         private void BubblesSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.OldItems != null)
+            if (e.OldItems != null)
             {
-                foreach(INotifyPropertyChanged oldItem in e.OldItems.OfType<INotifyPropertyChanged>())
+                foreach (INotifyPropertyChanged oldItem in e.OldItems.OfType<INotifyPropertyChanged>())
                     oldItem.PropertyChanged -= BubbleSourcePropertyChanged;
             }
-            if(e.NewItems != null)
+            if (e.NewItems != null)
             {
-                foreach(INotifyPropertyChanged oldItem in e.NewItems.OfType<INotifyPropertyChanged>())
+                foreach (INotifyPropertyChanged oldItem in e.NewItems.OfType<INotifyPropertyChanged>())
                     oldItem.PropertyChanged += BubbleSourcePropertyChanged;
             }
             RefreshBubbles();
@@ -137,55 +193,55 @@ namespace BubbleChartWin8.Controls
         private BubbleControl GetBubble(object bubbleSource)
         {
             BubbleControl bubble = Bubbles.FirstOrDefault(b => b.DataContext == bubbleSource);
-            if(bubble == null)
+            if (bubble == null)
             {
-                bubble = new BubbleControl { DataContext = bubbleSource };
-                bubble.SetBinding(BubbleControl.LegendValueProperty, new Binding { Path = new PropertyPath(LegendMember) });
-                bubble.SetBinding(BubbleControl.XValueProperty, new Binding { Path = new PropertyPath(XMember) });
-                bubble.SetBinding(BubbleControl.YValueProperty, new Binding { Path = new PropertyPath(YMember) });
-                bubble.SetBinding(BubbleControl.RadiusProperty, new Binding { Path = new PropertyPath(RadiusMember) });
+                bubble = new BubbleControl {DataContext = bubbleSource};
+                bubble.SetBinding(BubbleControl.LegendValueProperty, new Binding {Path = new PropertyPath(LegendMember)});
+                bubble.SetBinding(BubbleControl.XValueProperty, new Binding {Path = new PropertyPath(XMember)});
+                bubble.SetBinding(BubbleControl.YValueProperty, new Binding {Path = new PropertyPath(YMember)});
+                bubble.SetBinding(BubbleControl.RadiusProperty, new Binding {Path = new PropertyPath(RadiusMember)});
             }
             return bubble;
         }
 
         private double GetBubbleSize(double radius)
         {
-            return GetPixels(_radiusMin, _radiusMax, radius, MaxBubbleSize);
+            return GetPixels(RadiusMin, RadiusMax, radius, MaxBubbleSize);
         }
 
         private double GetCanvasLeft(double xValue)
         {
-            return GetPixels(_xMin, _xMax, xValue, _bubblesCanvas.ActualWidth);
+            return GetPixels(XMin, XMax, xValue, _bubblesCanvas.ActualWidth);
         }
 
         private double GetCanvasTop(double yValue)
         {
-            return _bubblesCanvas.ActualHeight - GetPixels(_yMin, _yMax, yValue, _bubblesCanvas.ActualHeight);
+            return _bubblesCanvas.ActualHeight - GetPixels(YMin, YMax, yValue, _bubblesCanvas.ActualHeight);
         }
 
         private void OnBubblesSourceChanged(DependencyPropertyChangedEventArgs args)
         {
-            if(Equals(args.OldValue, args.NewValue)) return;
+            if (Equals(args.OldValue, args.NewValue)) return;
 
             // subscribe to CollectionChanged event
             var oldNotifyCollection = args.OldValue as INotifyCollectionChanged;
             var newNotifyCollection = args.NewValue as INotifyCollectionChanged;
-            if(oldNotifyCollection != null)
+            if (oldNotifyCollection != null)
                 oldNotifyCollection.CollectionChanged -= BubblesSourceCollectionChanged;
-            if(newNotifyCollection != null)
+            if (newNotifyCollection != null)
                 newNotifyCollection.CollectionChanged += BubblesSourceCollectionChanged;
 
             // subscribe to PropertyChanged event
-            var oldEnumerable = (IEnumerable)args.OldValue;
-            var newEnumerable = (IEnumerable)args.NewValue;
-            if(oldEnumerable != null)
+            var oldEnumerable = (IEnumerable) args.OldValue;
+            var newEnumerable = (IEnumerable) args.NewValue;
+            if (oldEnumerable != null)
             {
-                foreach(INotifyPropertyChanged notifyObject in oldEnumerable.OfType<INotifyPropertyChanged>())
+                foreach (INotifyPropertyChanged notifyObject in oldEnumerable.OfType<INotifyPropertyChanged>())
                     notifyObject.PropertyChanged -= BubbleSourcePropertyChanged;
             }
-            if(newEnumerable != null)
+            if (newEnumerable != null)
             {
-                foreach(INotifyPropertyChanged notifyObject in newEnumerable.OfType<INotifyPropertyChanged>())
+                foreach (INotifyPropertyChanged notifyObject in newEnumerable.OfType<INotifyPropertyChanged>())
                     notifyObject.PropertyChanged += BubbleSourcePropertyChanged;
             }
 
@@ -194,19 +250,14 @@ namespace BubbleChartWin8.Controls
 
         private void RefreshBubblePositions()
         {
-            if(Bubbles.Count == 0) return;
-            _xMin = Bubbles.Min(bubble => bubble.XValue);
-            _xMax = Bubbles.Max(bubble => bubble.XValue);
-            _yMin = Bubbles.Min(bubble => bubble.YValue);
-            _yMax = Bubbles.Max(bubble => bubble.YValue);
-            _radiusMin = Bubbles.Min(bubble => bubble.Radius);
-            _radiusMax = Bubbles.Max(bubble => bubble.Radius);
+            if (Bubbles.Count == 0) return;
             var storyboard = new Storyboard();
-            foreach(BubbleControl bubble in Bubbles)
+            foreach (BubbleControl bubble in Bubbles)
             {
-                var sizeAnimation = new DoubleAnimation { To = GetBubbleSize(bubble.Radius) };
-                var leftAnimation = new DoubleAnimation { To = GetCanvasLeft(bubble.XValue) };
-                var topAnimation = new DoubleAnimation { To = GetCanvasTop(bubble.YValue) };
+                var sizeAnimation = new DoubleAnimation
+                                        {To = GetBubbleSize(bubble.Radius), EnableDependentAnimation = true};
+                var leftAnimation = new DoubleAnimation {To = GetCanvasLeft(bubble.XValue)};
+                var topAnimation = new DoubleAnimation {To = GetCanvasTop(bubble.YValue)};
                 storyboard.Children.Add(sizeAnimation);
                 storyboard.Children.Add(leftAnimation);
                 storyboard.Children.Add(topAnimation);
@@ -216,9 +267,6 @@ namespace BubbleChartWin8.Controls
                 Storyboard.SetTargetProperty(sizeAnimation, "(BubbleControl.Size)");
                 Storyboard.SetTargetProperty(leftAnimation, "(Canvas.Left)");
                 Storyboard.SetTargetProperty(topAnimation, "(Canvas.Top)");
-                bubble.Size = GetBubbleSize(bubble.Radius); 
-                /*bubble.SetValue(Canvas.LeftProperty, GetCanvasLeft(bubble.XValue));
-                bubble.SetValue(Canvas.TopProperty, GetCanvasTop(bubble.YValue));*/
             }
             storyboard.BeginTime = TimeSpan.FromSeconds(0);
             storyboard.Duration = TimeSpan.FromSeconds(1);
@@ -227,12 +275,12 @@ namespace BubbleChartWin8.Controls
 
         private void RefreshBubbles()
         {
-            if(_bubblesCanvas == null) return;
+            if (_bubblesCanvas == null) return;
             List<BubbleControl> newBubbleControls = BubblesSource.Cast<object>().Select(GetBubble).ToList();
             Bubbles.Clear();
             Bubbles.AddRange(newBubbleControls);
             _bubblesCanvas.Children.Clear();
-            foreach(BubbleControl bubble in Bubbles)
+            foreach (BubbleControl bubble in Bubbles)
                 _bubblesCanvas.Children.Add(bubble);
             RefreshBubblePositions();
         }

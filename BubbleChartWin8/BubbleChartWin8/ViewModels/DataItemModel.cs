@@ -2,19 +2,19 @@
 {
     public class DataItemModel : ViewModel
     {
-        private double _middleAge;
+        private double _workingPopulation;
         private double _population;
         private double _profit;
         private string _region;
         private int _reportingYear;
 
-        public DataItemModel(int reportingYear, string region, double population, double profit, double middleAge)
+        public DataItemModel(int reportingYear, string region, double population, double profit, double workingPopulation)
         {
             ReportingYear = reportingYear;
             Region = region;
             Population = population;
             Profit = profit;
-            MiddleAge = middleAge;
+            WorkingPopulation = workingPopulation;
         }
 
         public DataItemModel(int reportingYear, string region)
@@ -23,13 +23,13 @@
             Region = region;
         }
 
-        public double MiddleAge
+        public double WorkingPopulation
         {
-            get { return _middleAge; }
+            get { return _workingPopulation; }
             set
             {
-                _middleAge = value;
-                RaisePropertyChanged("MiddleAge");
+                _workingPopulation = value;
+                RaisePropertyChanged("WorkingPopulation");
             }
         }
 

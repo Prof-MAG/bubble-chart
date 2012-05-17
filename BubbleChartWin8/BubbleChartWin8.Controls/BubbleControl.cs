@@ -18,8 +18,7 @@ namespace BubbleChartWin8.Controls
                 new PropertyMetadata(default(double)));
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(double), typeof(BubbleControl),
-                new PropertyMetadata(default(double), (o, args) => ((BubbleControl)o).OnSizeChanged()));
+            DependencyProperty.Register("Size", typeof(double), typeof(BubbleControl),new PropertyMetadata(default(double), (o, args) => ((BubbleControl)o).OnSizeChanged()));
 
         public static readonly DependencyProperty XValueProperty =
             DependencyProperty.Register("XValue", typeof(double), typeof(BubbleControl),
@@ -56,6 +55,16 @@ namespace BubbleChartWin8.Controls
         {
             get { return (double)GetValue(SizeProperty); }
             set { SetValue(SizeProperty, value); }
+        }
+
+        public static double GetSize(BubbleControl control)
+        {
+            return (double) control.GetValue(SizeProperty);
+        }
+
+        public static void SetSize(BubbleControl control, double value)
+        {
+            control.SetValue(SizeProperty, value);
         }
 
         public double XValue

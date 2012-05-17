@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="BubbleChartControl.cs" />
     <Compile Include="BubbleControl.cs" />
+    <Compile Include="PacmanControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">
